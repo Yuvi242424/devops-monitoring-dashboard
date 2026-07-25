@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>DevOps Monitoring Dashboard</title>
+
+<style>
+
+body{
+
+font-family:Arial;
+background:#eceff1;
+margin:40px;
+
+}
+
+h1{
+
+text-align:center;
+
+}
+
+.grid{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:20px;
+
+}
+
+.card{
+
+background:white;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.1);
+
+}
+
+button{
+
+padding:12px 18px;
+margin:10px;
+font-size:16px;
+cursor:pointer;
+
+}
+
+.center{
+
+text-align:center;
+margin-top:30px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>🚀 DevOps Monitoring Dashboard</h1>
+
+<div class="grid">
+
+<div class="card">
+
+<h2>Status</h2>
+
+<p>{{status}}</p>
+
+</div>
+
+<div class="card">
+
+<h2>Total Requests</h2>
+
+<p>{{requests}}</p>
+
+</div>
+
+<div class="card">
+
+<h2>Total Errors</h2>
+
+<p>{{errors}}</p>
+
+</div>
+
+<div class="card">
+
+<h2>CPU Usage</h2>
+
+<p>{{cpu}} %</p>
+
+</div>
+
+<div class="card">
+
+<h2>Memory Usage</h2>
+
+<p>{{memory}} %</p>
+
+</div>
+
+</div>
+
+<div class="center">
+
+<button onclick="fetch('/generate-load')">
+Generate Load
+</button>
+
+<button onclick="fetch('/generate-error')">
+Generate Error
+</button>
+
+<button onclick="location.reload()">
+Refresh Dashboard
+</button>
+
+</div>
+
+</body>
+
+</html>
