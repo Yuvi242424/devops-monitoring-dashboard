@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 
 <title>DevOps Monitoring Dashboard</title>
@@ -8,50 +7,53 @@
 <style>
 
 body{
-
 font-family:Arial;
 background:#eceff1;
 margin:40px;
-
 }
 
 h1{
-
 text-align:center;
-
 }
 
 .grid{
-
 display:grid;
 grid-template-columns:repeat(2,1fr);
 gap:20px;
-
 }
 
 .card{
-
 background:white;
 padding:20px;
 border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,.1);
+box-shadow:0 0 10px rgba(0,0,0,.15);
+text-align:center;
+}
 
+.value{
+font-size:30px;
+font-weight:bold;
+color:#1565c0;
 }
 
 button{
-
-padding:12px 18px;
+padding:12px 20px;
 margin:10px;
 font-size:16px;
 cursor:pointer;
+border:none;
+border-radius:6px;
+background:#1565c0;
+color:white;
+}
 
+button:hover{
+background:#0d47a1;
 }
 
 .center{
-
 text-align:center;
 margin-top:30px;
-
 }
 
 </style>
@@ -65,63 +67,90 @@ margin-top:30px;
 <div class="grid">
 
 <div class="card">
-
 <h2>Status</h2>
-
-<p>{{status}}</p>
-
+<div class="value" id="status">Loading...</div>
 </div>
 
 <div class="card">
-
-<h2>Total Requests</h2>
-
-<p>{{requests}}</p>
-
-</div>
-
-<div class="card">
-
-<h2>Total Errors</h2>
-
-<p>{{errors}}</p>
-
-</div>
-
-<div class="card">
-
 <h2>CPU Usage</h2>
-
-<p>{{cpu}} %</p>
-
+<div class="value" id="cpu">0%</div>
 </div>
 
 <div class="card">
-
 <h2>Memory Usage</h2>
+<div class="value" id="memory">0%</div>
+</div>
 
-<p>{{memory}} %</p>
+<div class="card">
+<h2>Disk Usage</h2>
+<div class="value" id="disk">0%</div>
+</div>
 
+<div class="card">
+<h2>Processes</h2>
+<div class="value" id="processes">0</div>
+</div>
+
+<div class="card">
+<h2>Uptime</h2>
+<div class="value" id="uptime">0 s</div>
 </div>
 
 </div>
 
 <div class="center">
 
-<button onclick="fetch('/generate-load')">
+<button onclick="generateLoad()">
 Generate Load
 </button>
 
-<button onclick="fetch('/generate-error')">
+<button onclick="generateError()">
 Generate Error
-</button>
-
-<button onclick="location.reload()">
-Refresh Dashboard
 </button>
 
 </div>
 
-</body>
+<script>
 
+async function updateDashboard(){
+
+const response = await fetch("/api/system");
+const data = await response.json();
+
+document.getElementById("status").innerHTML = data.status;
+document.getElementById("cpu").innerHTML = data.cpu + " %";
+document.getElementById("memory").innerHTML = data.memory + " %";
+document.getElementById("disk").innerHTML = data.disk + " %";
+document.getElementById("processes").innerHTML = data.processes;
+document.getElementById("uptime").innerHTML = data.uptime + " s";
+
+}
+
+async function generateLoad(){
+
+await fetch("/api/load",{
+method:"POST"
+});
+
+updateDashboard();
+
+}
+
+async function generateError(){
+
+await fetch("/api/error",{
+method:"POST"
+});
+
+updateDashboard();
+
+}
+
+updateDashboard();
+
+setInterval(updateDashboard,3000);
+
+</script>
+
+</body>
 </html>
