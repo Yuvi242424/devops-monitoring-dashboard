@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify
-from system import get_system_info, get_health
-from metrics import record_request, record_error
+
+from app.system import get_system_info, get_health
+from app.metrics import record_request, record_error
 
 api = Blueprint("api", __name__)
 
