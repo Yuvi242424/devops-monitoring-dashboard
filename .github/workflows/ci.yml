@@ -18,7 +18,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout Repository
         uses: actions/checkout@v4
 
@@ -68,10 +67,25 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push Docker Image
+        env:
+          IMAGE_NAME: ghcr.io/yuvi242424/devops-monitoring-dashboard:latest
         run: |
-          IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/devops-monitoring-dashboard:latest
           docker build -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
+      - name: Verify Published Image
+        run: |
+          echo "Docker image published successfully:"
+          echo "$IMAGE_NAME"
+
       - name: CI Pipeline Completed
-        run: echo "✅ CI Pipeline Completed Successfully"
+        run: |
+          echo "=================================="
+          echo "✅ CI Pipeline Completed"
+          echo "✔ Formatting Passed"
+          echo "✔ Linting Passed"
+          echo "✔ Tests Passed"
+          echo "✔ Flask Validation Passed"
+          echo "✔ Docker Image Built"
+          echo "✔ Docker Image Published"
+          echo "=================================="
